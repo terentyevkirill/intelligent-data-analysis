@@ -75,71 +75,57 @@ def main():
     plt.plot(center_green[0], center_green[1], '+g')
 
     # Вычисляем координаты
-    rb_dx = center_blue[0] - center_red[0]  # red-blue dx
-    rb_dy = center_blue[1] - center_red[1]  # red-blue dy
-    ry_dx = center_yellow[0] - center_red[0]  # red-yellow dx
-    ry_dy = center_yellow[1] - center_red[1]  # red-yellow dy
-    rg_dx = center_green[0] - center_red[0]  # red-green dx
-    rg_dy = center_green[1] - center_red[1] # red-green dy
-    by_dx = center_yellow[0] - center_blue[0] # blue-yellow dx
-    by_dy = center_yellow[1] - center_blue[1]  # blue-yellow dy
-    bg_dx = center_green[0] - center_blue[0] # blue-green dx
-    bg_dy = center_green[1] - center_blue[1]  # blue-green dy
-    gb_dx = center_blue[0] - center_green[0]
-    gb_dy = center_blue[1] - center_green[1]
-    yg_dx = center_green[0] - center_yellow[0]  # yellow-green dx
-    yg_dy = center_green[1] - center_yellow[1] # yellow-green dy
-    gy_dx = center_yellow[0] - center_green[0]
-    gy_dy = center_yellow[1] - center_green[1]
+    rb_dx = center_blue[0] - center_red[0]          # red-blue dx
+    rb_dy = center_blue[1] - center_red[1]          # red-blue dy
+    ry_dx = center_yellow[0] - center_red[0]        # red-yellow dx
+    ry_dy = center_yellow[1] - center_red[1]        # red-yellow dy
+    rg_dx = center_green[0] - center_red[0]         # red-green dx
+    rg_dy = center_green[1] - center_red[1]         # red-green dy
+    by_dx = center_yellow[0] - center_blue[0]       # blue-yellow dx
+    by_dy = center_yellow[1] - center_blue[1]       # blue-yellow dy
+    gb_dx = center_blue[0] - center_green[0]        # green-blue dx
+    gb_dy = center_blue[1] - center_green[1]        # green-blue dy
+    gy_dx = center_yellow[0] - center_green[0]      # green-yellow dx
+    gy_dy = center_yellow[1] - center_green[1]      # green-yellow dy
 
     # Вычисляем середины отрезков, соединяющих классы
     rb_mid_line_p = get_mid_section(rb_dx, rb_dy, center_red[0], center_blue[1])
     ry_mid_line_p = get_mid_section(ry_dx, ry_dy, center_red[0], center_yellow[1])
     rg_mid_line_p = get_mid_section(rg_dx, rg_dy, center_red[0], center_green[1])
     by_mid_line_p = get_mid_section(by_dx, by_dy, center_blue[0], center_yellow[1])
-    # не работает
-    bg_mid_line_p = get_mid_section(bg_dx, bg_dy, center_blue[0], center_green[1])
     gb_mid_line_p = get_mid_section(gb_dx, gb_dy, center_green[0], center_green[1])
-    yg_mid_line_p = get_mid_section(yg_dx, yg_dy, center_yellow[0], center_green[1])
     gy_mid_line_p = get_mid_section(gy_dx, gy_dy, center_green[0], center_yellow[1])
 
-    # Вычисляем линию, проходящую между классами
+    # Вычисляем линии, проходящие между классами
     rb_line_x, rb_line_y = get_class_connect_line_equation(rb_dx, rb_dy, center_red, center_blue)
     ry_line_x, ry_line_y = get_class_connect_line_equation(ry_dx, ry_dy, center_red, center_yellow)
     rg_line_x, rg_line_y = get_class_connect_line_equation(rg_dx, rg_dy, center_red, center_green)
     by_line_x, by_line_y = get_class_connect_line_equation(by_dx, by_dy, center_blue, center_yellow)
-    # bg_line_x, bg_line_y = get_class_connect_line_equation(bg_dx, bg_dy, center_blue, center_green)   # соединяет неправильно
-    gb_line_x, gb_line_y = get_class_connect_line_equation(gb_dx, gb_dy, center_green, center_blue)     # соединяет классы правильно
-
-    # yg_line_x, yg_line_y = get_class_connect_line_equation(yg_dx, yg_dy, center_yellow, center_green)
+    gb_line_x, gb_line_y = get_class_connect_line_equation(gb_dx, gb_dy, center_green, center_blue)
     gy_line_x, gy_line_y = get_class_connect_line_equation(gy_dx, gy_dy, center_green, center_yellow)
 
+    # Рисуем линии, проходящие между классами
     plt.plot(rb_line_x, rb_line_y)
     plt.plot(ry_line_x, ry_line_y)
     plt.plot(rg_line_x, rg_line_y)
     plt.plot(by_line_x, by_line_y)
     plt.plot(gb_line_x, gb_line_y)
-    # plt.plot(bg_line_x, bg_line_y)
-    # plt.plot(yg_line_x, yg_line_y)
     plt.plot(gy_line_x, gy_line_y)
 
-    # Вычисляем линию, разделяющую классы
+    # Вычисляем линии, разделяющие классы
     rb_sep_line = get_separating_line(rb_dx, rb_dy, rb_mid_line_p)
     ry_sep_line = get_separating_line(ry_dx, ry_dy, ry_mid_line_p)
     rg_sep_line = get_separating_line(rg_dx, rg_dy, rg_mid_line_p)
     by_sep_line = get_separating_line(by_dx, by_dy, by_mid_line_p)
-    # bg_sep_line = get_separating_line(bg_dx, bg_dy, bg_mid_line_p)
     gb_sep_line = get_separating_line(gb_dx, gb_dy, gb_mid_line_p)
-    # yg_sep_line = get_separating_line(yg_dx, yg_dy, yg_mid_line_p)
     gy_sep_line = get_separating_line(gy_dx, gy_dy, gy_mid_line_p)
 
+    # Рисуем линии, разделяющие классы
     plt.plot(rb_sep_line[0], rb_sep_line[1])
     plt.plot(ry_sep_line[0], ry_sep_line[1])
     plt.plot(rg_sep_line[0], rg_sep_line[1])
     plt.plot(by_sep_line[0], by_sep_line[1])
     plt.plot(gb_sep_line[0], gb_sep_line[1])
-    # plt.plot(bg_sep_line[0], bg_sep_line[1])
-    # plt.plot(yg_sep_line[0], yg_sep_line[1])
     plt.plot(gy_sep_line[0], gy_sep_line[1])
 
     # Рисуем точки на серединах отрезков между классами - поверх линий
@@ -147,9 +133,7 @@ def main():
     plt.plot(ry_mid_line_p[0], ry_mid_line_p[1], '*k')
     plt.plot(rg_mid_line_p[0], rg_mid_line_p[1], '*k')
     plt.plot(by_mid_line_p[0], by_mid_line_p[1], '*k')
-    # plt.plot(bg_mid_line_p[0], bg_mid_line_p[1], '*k')
     plt.plot(gb_mid_line_p[0], gb_mid_line_p[1], '*k')
-    # plt.plot(yg_mid_line_p[0], yg_mid_line_p[1], '*k')
     plt.plot(gy_mid_line_p[0], gy_mid_line_p[1], '*k')
 
     plt.grid(True)
