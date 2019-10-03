@@ -58,14 +58,14 @@ def get_separating_line(dx, dy, mid_line_point):
         'b': b
     }
 
+def draw_classes():
+    p1, = plt.plot(class1[:, 0], class1[:, 1], 'sr')
+    p2, = plt.plot(class2[:, 0], class2[:, 1], 'Db')
+    p3, = plt.plot(class3[:, 0], class3[:, 1], 'oy')
+    p4, = plt.plot(class4[:, 0], class4[:, 1], '^g')
+    plt.legend([p1, p2, p3, p4,], ["Class 1", "Class 2", "Class 3", "Class 4"])
 
 def main():
-    # Рисуем классы
-    # p1, = plt.plot(class1[:, 0], class1[:, 1], 'sr')
-    # p2, = plt.plot(class2[:, 0], class2[:, 1], 'Db')
-    # p3, = plt.plot(class3[:, 0], class3[:, 1], 'oy')
-    # p4, = plt.plot(class4[:, 0], class4[:, 1], '^g')
-    # plt.legend([p1, p2, p3, p_green], ["Class 1", "Class 2", "Class 3", "Class 4"])
 
     # Находим центроиды
     center1 = get_centroid(class1)
@@ -73,11 +73,12 @@ def main():
     center3 = get_centroid(class3)
     center4 = get_centroid(class4)
 
-    # Рисуем центры классов
-    plt.plot(center1[0], center1[1], '+r')
-    plt.plot(center2[0], center2[1], '+b')
-    plt.plot(center3[0], center3[1], '+y')
-    plt.plot(center4[0], center4[1], '+g')
+    def draw_centroids():
+        # Рисуем центры классов
+        plt.plot(center1[0], center1[1], '+r')
+        plt.plot(center2[0], center2[1], '+b')
+        plt.plot(center3[0], center3[1], '+y')
+        plt.plot(center4[0], center4[1], '+g')
 
     # Вычисляем центроиды для всех точек, не принадлежащих данному классу
     class234 = np.append(class2, np.array([class3, class4]))
@@ -96,11 +97,12 @@ def main():
     class123 = class123.reshape((15, 2))
     center123 = get_centroid(class123)
 
-    # Рисуем центроиды для "остальных точек" к каждому классу
-    plt.plot(center234[0], center234[1], '+r')
-    plt.plot(center134[0], center134[1], '+b')
-    plt.plot(center124[0], center124[1], '+y')
-    plt.plot(center123[0], center123[1], '+g')
+    def draw_other_centroids():
+        # Рисуем центроиды для "остальных точек" к каждому классу
+        plt.plot(center234[0], center234[1], '+r')
+        plt.plot(center134[0], center134[1], '+b')
+        plt.plot(center124[0], center124[1], '+y')
+        plt.plot(center123[0], center123[1], '+g')
 
     # Вычисляем координаты
     dx_1_234 = center234[0] - center1[0]
@@ -124,11 +126,12 @@ def main():
     line_x_3_124, line_y_3_124 = get_class_connect_line_equation(dx_3_124, dy_3_124, center3, center124)
     line_x_4_123, line_y_4_123 = get_class_connect_line_equation(dx_4_123, dy_4_123, center4, center123)
 
-    # Рисуем линии, проходящие между классами
-    # plt.plot(line_x_1_234, line_y_1_234, 'gray')
-    # plt.plot(line_x_2_134, line_y_2_134, 'gray')
-    # plt.plot(line_x_3_124, line_y_3_124, 'gray')
-    # plt.plot(line_x_4_123, line_y_4_123,'gray')
+    def draw_connect_lines():
+        # Рисуем линии, проходящие между классами
+        plt.plot(line_x_1_234, line_y_1_234, 'gray')
+        plt.plot(line_x_2_134, line_y_2_134, 'gray')
+        plt.plot(line_x_3_124, line_y_3_124, 'gray')
+        plt.plot(line_x_4_123, line_y_4_123,'gray')
 
     # Вычисляем линии, разделяющие классы
     sep_line_1_234 = get_separating_line(dx_1_234, dy_1_234, mid_line_p_1_234)
@@ -136,119 +139,164 @@ def main():
     sep_line_3_124 = get_separating_line(dx_3_124, dy_3_124, mid_line_p_3_124)
     sep_line_4_123 = get_separating_line(dx_4_123, dy_4_123, mid_line_p_4_123)
 
-    # Рисуем линии, разделяющие классы
-    plt.plot(sep_line_1_234['coord_x'], sep_line_1_234['coord_y'], '-k')
-    plt.plot(sep_line_2_134['coord_x'], sep_line_2_134['coord_y'], '-k')
-    plt.plot(sep_line_3_124['coord_x'], sep_line_3_124['coord_y'], '-k')
-    plt.plot(sep_line_4_123['coord_x'], sep_line_4_123['coord_y'], '-k')
+    def draw_sep_lines():
+        # Рисуем линии, разделяющие классы
+        plt.plot(sep_line_1_234['coord_x'], sep_line_1_234['coord_y'], '-k')
+        plt.plot(sep_line_2_134['coord_x'], sep_line_2_134['coord_y'], '-k')
+        plt.plot(sep_line_3_124['coord_x'], sep_line_3_124['coord_y'], '-k')
+        plt.plot(sep_line_4_123['coord_x'], sep_line_4_123['coord_y'], '-k')
 
-    # def isClass1(point):  # Принадлежит ли точка классу 1
-    #     # находим коэффициенты разделяющих линий для класса 1
-    #     sep_line_k_12 = [sep_line_1_234['a'], sep_line_1_234['b']]
-    #     sep_line_k_13 = [sep_line_2_134['a'], sep_line_2_134['b']]
-    #     sep_line_k_14 = [sep_line_3_124['a'], sep_line_3_124['b']]
-    #     # находим решающие функции для класса 1
-    #     d12 = point[1] - sep_line_k_12[0] * point[0] - sep_line_k_12[1]
-    #     d13 = point[1] - sep_line_k_13[0] * point[0] - sep_line_k_13[1]
-    #     d14 = point[1] - sep_line_k_14[0] * point[0] - sep_line_k_14[1]
-    #     #  проверяем условие
-    #     return d12 > 0 and d13 > 0 and d14 > 0
-    #
-    # def isClass2(point):  # Принадлежит ли точка классу 2
-    #     sep_line_k_12 = [sep_line_1_234['a'], sep_line_1_234['b']]
-    #     sep_line_k_23 = [sep_line_4_123['a'], sep_line_4_123['b']]
-    #     sep_line_k_24 = [sep_line_42['a'], sep_line_42['b']]
-    #     d12 = point[1] - sep_line_k_12[0] * point[0] - sep_line_k_12[1]
-    #     d23 = point[1] - sep_line_k_23[0] * point[0] - sep_line_k_23[1]
-    #     d24 = point[1] - sep_line_k_24[0] * point[0] - sep_line_k_24[1]
-    #     return d12 <= 0 and d23 > 0 and d24 > 0
-    #
-    # def isClass3(point):
-    #     sep_line_k_13 = [sep_line_2_134['a'], sep_line_2_134['b']]
-    #     sep_line_k_23 = [sep_line_4_123['a'], sep_line_4_123['b']]
-    #     sep_line_k_34 = [sep_line_43['a'], sep_line_43['b']]
-    #     d13 = point[1] - sep_line_k_13[0] * point[0] - sep_line_k_13[1]
-    #     d23 = point[1] - sep_line_k_23[0] * point[0] - sep_line_k_23[1]
-    #     d34 = point[1] - sep_line_k_34[0] * point[0] - sep_line_k_34[1]
-    #     return d13 <= 0 and d23 <= 0 and d34 <= 0
-    #
-    # def isClass4(point):
-    #     sep_line_k_14 = [sep_line_3_124['a'], sep_line_3_124['b']]
-    #     sep_line_k_24 = [sep_line_42['a'], sep_line_42['b']]
-    #     sep_line_k_34 = [sep_line_43['a'], sep_line_43['b']]
-    #     d14 = point[1] - sep_line_k_14[0] * point[0] - sep_line_k_14[1]
-    #     d24 = point[1] - sep_line_k_24[0] * point[0] - sep_line_k_24[1]
-    #     d34 = point[1] - sep_line_k_34[0] * point[0] - sep_line_k_34[1]
-    #     return d14 <= 0 and d24 <= 0 and d34 > 0
+    def draw_mid_line_points():
+        # Рисуем точки на серединах отрезков между классами - поверх линий
+        plt.plot(mid_line_p_1_234[0], mid_line_p_1_234[1], '*k')
+        plt.plot(mid_line_p_2_134[0], mid_line_p_2_134[1], '*k')
+        plt.plot(mid_line_p_3_124[0], mid_line_p_3_124[1], '*k')
+        plt.plot(mid_line_p_4_123[0], mid_line_p_4_123[1], '*k')
 
-    # def classify(point):
-    #     if isClass1(point) and not (isClass2(point) or isClass3(point) or isClass4(point)):
-    #         return 'class1'
-    #     elif isClass2(point) and not (isClass1(point) or isClass3(point) or isClass4(point)):
-    #         return 'class2'
-    #     elif isClass3(point) and not (isClass1(point) or isClass2(point) or isClass4(point)):
-    #         return 'class3'
-    #     elif isClass4(point) and not (isClass1(point) or isClass2(point) or isClass3(point)):
-    #         return 'class4'
-    #     else:
-    #         return 'unclassified'
-    #
-    # def classifyClasses():
-    #     classes = [class1, class2, class3, class4]
-    #     matr = np.array([[]])
-    #     for c in classes:
-    #         i = 0
-    #         count1 = 0
-    #         count2 = 0
-    #         count3 = 0
-    #         count4 = 0
-    #         for p in c:
-    #             if classify(p) == 'class1':
-    #                 count1 += 1
-    #                 plt.plot(p[0], p[1], 'sr')
-    #             elif classify(p) == 'class2':
-    #                 count2 += 1
-    #                 plt.plot(p[0], p[1], 'Db')
-    #             elif classify(p) == 'class3':
-    #                 count3 += 1
-    #                 plt.plot(p[0], p[1], 'oy')
-    #             elif classify(p) == 'class4':
-    #                 count4 += 1
-    #                 plt.plot(p[0], p[1], '^g')
-    #             else:
-    #                 plt.plot(p[0], p[1], 'ok')
-    #
-    #         matr = np.append(matr, np.array([count1, count2, count3, count4]))
-    #         i += 1
-    #
-    #     matr = np.reshape(matr, (4, 4))
-    #     print(matr.astype(int))
+    def is_class1(point):
+        '''
+        Принадлежит ли точка классу 1
+        '''
+        # находим коэффициенты разделяющих линий для класса 1
+        sep_line_k_1_234 = [sep_line_1_234['a'], sep_line_1_234['b']]
+        sep_line_k_2_134 = [sep_line_2_134['a'], sep_line_2_134['b']]
+        sep_line_k_4_123 = [sep_line_4_123['a'], sep_line_4_123['b']]
+        # находим решающие функции для класса 1
+        d1_234 = point[1] - sep_line_k_1_234[0] * point[0] - sep_line_k_1_234[1]
+        d2_134 = point[1] - sep_line_k_2_134[0] * point[0] - sep_line_k_2_134[1]
+        d4_123 = point[1] - sep_line_k_4_123[0] * point[0] - sep_line_k_4_123[1]
+        #  проверяем условие
+        return d1_234 > 0 and d2_134 < 0 and d4_123 > 0
 
-    # classifyClasses()
+    def is_class2(point):
+        '''
+        Принадлежит ли точка классу 2
+        '''
+        sep_line_k_1_234 = [sep_line_1_234['a'], sep_line_1_234['b']]
+        sep_line_k_2_134 = [sep_line_2_134['a'], sep_line_2_134['b']]
+        sep_line_k_3_124 = [sep_line_3_124['a'], sep_line_3_124['b']]
+        d1_234 = point[1] - sep_line_k_1_234[0] * point[0] - sep_line_k_1_234[1]
+        d2_134 = point[1] - sep_line_k_2_134[0] * point[0] - sep_line_k_2_134[1]
+        d3_124 = point[1] - sep_line_k_3_124[0] * point[0] - sep_line_k_3_124[1]
+        return d1_234 <= 0 and d2_134 > 0 and d3_124 > 0
 
-    # def classifyMatrix():
-    #     matrix = [[round(x, 2), round(y, 2)] for x in np.arange(0, 0.61, 0.01) for y in np.arange(0, 1.02, 0.02)]
-    #     for p in matrix:
-    #         if classify(p) == 'class1':
-    #             plt.plot(p[0], p[1], 'or')
-    #         elif classify(p) == 'class2':
-    #             plt.plot(p[0], p[1], 'ob')
-    #         elif classify(p) == 'class3':
-    #             plt.plot(p[0], p[1], 'oy')
-    #         elif classify(p) == 'class4':
-    #             plt.plot(p[0], p[1], 'og')
-    #         else:
-    #             plt.plot(p[0], p[1], 'ok')
+    def is_class3(point):
+        '''
+        Принадлежит ли точка классу 3
+        '''
+        sep_line_k_2_134 = [sep_line_2_134['a'], sep_line_2_134['b']]
+        sep_line_k_3_124 = [sep_line_3_124['a'], sep_line_3_124['b']]
+        sep_line_k_4_123 = [sep_line_4_123['a'], sep_line_4_123['b']]
+        d2_134 = point[1] - sep_line_k_2_134[0] * point[0] - sep_line_k_2_134[1]
+        d3_124 = point[1] - sep_line_k_3_124[0] * point[0] - sep_line_k_3_124[1]
+        d4_123 = point[1] - sep_line_k_4_123[0] * point[0] - sep_line_k_4_123[1]
+        return d2_134 <= 0 and d3_124 <= 0 and d4_123 > 0
 
-    # classifyMatrix()
+    def is_class4(point):
+        '''
+        Принадлежит ли точка классу 4
+        '''
+        sep_line_k_1_234 = [sep_line_1_234['a'], sep_line_1_234['b']]
+        sep_line_k_3_124 = [sep_line_3_124['a'], sep_line_3_124['b']]
+        sep_line_k_4_123 = [sep_line_4_123['a'], sep_line_4_123['b']]
+        d1_234 = point[1] - sep_line_k_1_234[0] * point[0] - sep_line_k_1_234[1]
+        d3_124 = point[1] - sep_line_k_3_124[0] * point[0] - sep_line_k_3_124[1]
+        d4_123 = point[1] - sep_line_k_4_123[0] * point[0] - sep_line_k_4_123[1]
+        return d1_234 <= 0 and d3_124 > 0 and d4_123 <= 0
 
-    # Рисуем точки на серединах отрезков между классами - поверх линий
-    # plt.plot(mid_line_p_1_234[0], mid_line_p_1_234[1], '*k')
-    # plt.plot(mid_line_p_2_134[0], mid_line_p_2_134[1], '*k')
-    # plt.plot(mid_line_p_3_124[0], mid_line_p_3_124[1], '*k')
-    # plt.plot(mid_line_p_4_123[0], mid_line_p_4_123[1], '*k')
+    def classify(point):
+        '''
+        Классифицирует данную точку
+        :return: название класса или undefined
+        '''
+        if is_class1(point) and not (is_class2(point) or is_class3(point) or is_class4(point)):
+            return 'class1'
+        elif is_class2(point) and not (is_class1(point) or is_class3(point) or is_class4(point)):
+            return 'class2'
+        elif is_class3(point) and not (is_class1(point) or is_class2(point) or is_class4(point)):
+            return 'class3'
+        elif is_class4(point) and not (is_class1(point) or is_class2(point) or is_class3(point)):
+            return 'class4'
+        else:
+            return 'unclassified'
 
-    plt.xlim((0, 1))
+    def classify_and_draw_defaults():
+        '''
+        Рисуем исходные точки цветами классов, к которым их отнесла программа
+        '''
+        classes = [class1, class2, class3, class4]
+        matr = np.array([[]])
+        for c in classes:
+            i = 0
+            count1 = 0
+            count2 = 0
+            count3 = 0
+            count4 = 0
+            for p in c:
+                if classify(p) == 'class1':
+                    count1 += 1
+                    plt.plot(p[0], p[1], 'sr')
+                elif classify(p) == 'class2':
+                    count2 += 1
+                    plt.plot(p[0], p[1], 'Db')
+                elif classify(p) == 'class3':
+                    count3 += 1
+                    plt.plot(p[0], p[1], 'oy')
+                elif classify(p) == 'class4':
+                    count4 += 1
+                    plt.plot(p[0], p[1], '^g')
+                else:
+                    plt.plot(p[0], p[1], color='grey', marker='.')
+
+            matr = np.append(matr, np.array([count1, count2, count3, count4]))
+            i += 1
+
+        matr = np.reshape(matr, (4, 4))
+        print(matr.astype(int))
+        print(f'Точность метода: {matr.trace() / 20}')
+
+    def classify_and_draw_matrix():
+        '''
+        Рисуем матрицу точек цветами классов, к которым их отнесла программа
+        '''
+        matrix = [[x, y] for x in np.arange(0, 0.61, 0.01) for y in np.arange(0, 1.01, 0.02)]
+        for p in matrix:
+            if classify(p) == 'class1':
+                plt.plot(p[0], p[1], '.r')
+            elif classify(p) == 'class2':
+                plt.plot(p[0], p[1], '.b')
+            elif classify(p) == 'class3':
+                plt.plot(p[0], p[1], '.y')
+            elif classify(p) == 'class4':
+                plt.plot(p[0], p[1], '.g')
+            else:
+                plt.plot(p[0], p[1], color='grey', marker='.')
+
+    def classify_and_draw_point(p):
+        if classify(p) == 'class1':
+            plt.plot(p[0], p[1], 'sr')
+        elif classify(p) == 'class2':
+            plt.plot(p[0], p[1], 'Db')
+        elif classify(p) == 'class3':
+            plt.plot(p[0], p[1], 'oy')
+        elif classify(p) == 'class4':
+            plt.plot(p[0], p[1], '^g')
+        else:
+            plt.plot(p[0], p[1], color='grey', marker='.')
+
+    # DONT CHANGE
+    draw_sep_lines()
+
+    # CHANGE HERE
+    # draw_classes()
+    # classify_and_draw_defaults()
+    # classify_and_draw_matrix()
+    # classify_and_draw_point([x, y])
+
+    # DONT CHANGE
+    # draw_mid_line_points()
+
+    plt.xlim((0, 0.6))
     plt.ylim((0, 1))
     plt.grid(True)
     plt.show()
