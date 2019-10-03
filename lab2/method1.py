@@ -23,6 +23,10 @@ class4 = np.array([[0.05, 0.15],
                    [0.15, 0.36]])
 
 
+'''
+    ПОПАРНОЕ РАЗДЕЛЕНИЕ КЛАССОВ
+'''
+
 def line_equation(a, b, x):
     return a * x + b
 
@@ -34,6 +38,10 @@ def get_centroid(points):
 
 
 def get_class_connect_line_equation(dx, dy, center1, center2):
+    '''
+    Нахождение прямой, соединяющей центроиды 2 классов
+    :return: прямая в виде массива точек
+    '''
     a1 = dy / dx
     b1 = center1[1] - a1 * center1[0]
     x1 = np.arange(center1[0], center2[0], 0.0001)
@@ -42,12 +50,21 @@ def get_class_connect_line_equation(dx, dy, center1, center2):
 
 
 def get_mid_section(dx, dy, coord_x, coord_y):
+    '''
+    Нахождение середины отрезка, соединяющего центроиды
+    :return: координаты середины отрезка
+    '''
     x_o = coord_x + abs(dx) / 2
     y_o = coord_y + abs(dy) / 2
     return [x_o, y_o]
 
 
 def get_separating_line(dx, dy, mid_line_point):
+    '''
+    Нахождение линии, разделяющей два класса
+    :return: объект, содержащий координаты точек, из которых состоит прямая,
+    а также коеффициенты прямой
+    '''
     a = -dx / dy
     b = (mid_line_point[0] * dx + mid_line_point[1] * dy) / dy
     coord_x_array = np.arange(0, 0.61, 0.01)
@@ -236,7 +253,7 @@ def main():
 
         matr = np.reshape(matr, (4, 4))
         print(matr.astype(int))
-        print(f'Точность метода: {matr.trace()/20}')
+        print(f'Точность метода (попарное разделение классов): {matr.trace()/20}')
 
 
     def classify_and_draw_matrix():
@@ -269,12 +286,13 @@ def main():
             plt.plot(p[0], p[1], color='grey', marker='.')
 
     # DONT CHANGE
+    # draw_classes()
+    # draw_centroids()
     draw_sep_lines()
 
     # CHANGE HERE
-    # draw_classes()
     # classify_and_draw_defaults()
-    # classify_and_draw_matrix()
+    classify_and_draw_matrix()
     # classify_and_draw_point([0.3, 0.5])
 
     plt.xlim((0, 0.6))

@@ -22,6 +22,9 @@ class4 = np.array([[0.05, 0.15],
                    [0.25, 0.34],
                    [0.15, 0.36]])
 
+'''
+    ПОСЛЕДОВАТЕЛЬНОЕ РАЗДЕЛЕНИЕ КЛАССОВ
+'''
 
 def line_equation(a, b, x):
     return a * x + b
@@ -75,10 +78,10 @@ def main():
 
     def draw_centroids():
         # Рисуем центры классов
-        plt.plot(center1[0], center1[1], '+r')
-        plt.plot(center2[0], center2[1], '+b')
-        plt.plot(center3[0], center3[1], '+y')
-        plt.plot(center4[0], center4[1], '+g')
+        plt.plot(center1[0], center1[1], 'or')
+        plt.plot(center2[0], center2[1], 'ob')
+        plt.plot(center3[0], center3[1], 'oy')
+        plt.plot(center4[0], center4[1], 'og')
 
     # Вычисляем центроиды для всех точек, не принадлежащих данному классу
     class234 = np.append(class2, np.array([class3, class4]))
@@ -141,10 +144,10 @@ def main():
 
     def draw_sep_lines():
         # Рисуем линии, разделяющие классы
-        plt.plot(sep_line_1_234['coord_x'], sep_line_1_234['coord_y'], '-k')
-        plt.plot(sep_line_2_134['coord_x'], sep_line_2_134['coord_y'], '-k')
-        plt.plot(sep_line_3_124['coord_x'], sep_line_3_124['coord_y'], '-k')
-        plt.plot(sep_line_4_123['coord_x'], sep_line_4_123['coord_y'], '-k')
+        plt.plot(sep_line_1_234['coord_x'], sep_line_1_234['coord_y'], '-r')
+        plt.plot(sep_line_2_134['coord_x'], sep_line_2_134['coord_y'], '-b')
+        plt.plot(sep_line_3_124['coord_x'], sep_line_3_124['coord_y'], '-y')
+        plt.plot(sep_line_4_123['coord_x'], sep_line_4_123['coord_y'], '-g')
 
     def draw_mid_line_points():
         # Рисуем точки на серединах отрезков между классами - поверх линий
@@ -253,7 +256,7 @@ def main():
 
         matr = np.reshape(matr, (4, 4))
         print(matr.astype(int))
-        print(f'Точность метода: {matr.trace() / 20}')
+        print(f'Точность метода (последовательное разделение классов): {matr.trace() / 20}')
 
     def classify_and_draw_matrix():
         '''
@@ -288,9 +291,10 @@ def main():
     draw_sep_lines()
 
     # CHANGE HERE
+    # draw_centroids()
     # draw_classes()
     # classify_and_draw_defaults()
-    # classify_and_draw_matrix()
+    classify_and_draw_matrix()
     # classify_and_draw_point([x, y])
 
     # DONT CHANGE
