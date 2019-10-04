@@ -288,7 +288,7 @@ def main():
             plt.plot(p[0], p[1], color='grey', marker='.')
 
     # DONT CHANGE
-    draw_sep_lines()
+    # draw_sep_lines()
 
     # CHANGE HERE
     # draw_centroids()

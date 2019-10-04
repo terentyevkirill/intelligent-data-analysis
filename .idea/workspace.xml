@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="83a98130-5414-484a-9aea-d955d4881190" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab2/method1.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab2/method1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lab2/method2.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab2/method2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -210,7 +209,10 @@
       <workItem from="1570009506561" duration="8512000" />
       <workItem from="1570051197748" duration="92000" />
       <workItem from="1570051393825" duration="410000" />
-      <workItem from="1570091887404" duration="12915000" />
+      <workItem from="1570091887404" duration="13065000" />
+      <workItem from="1570107982493" duration="71000" />
+      <workItem from="1570123658163" duration="162000" />
+      <workItem from="1570180502843" duration="1009000" />
     </task>
     <servers />
   </component>
@@ -231,10 +233,10 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/intelligent_data_analysis$method2.coverage" NAME="method2 Coverage Results" MODIFIED="1570107192683" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lab2" />
-    <SUITE FILE_PATH="coverage/intelligent_data_analysis$auto_input.coverage" NAME="auto_input Coverage Results" MODIFIED="1569963499203" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lab1" />
+    <SUITE FILE_PATH="coverage/intelligent_data_analysis$method2.coverage" NAME="method2 Coverage Results" MODIFIED="1570181039198" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lab2" />
+    <SUITE FILE_PATH="coverage/intelligent_data_analysis$auto_input.coverage" NAME="auto_input Coverage Results" MODIFIED="1570123766561" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lab1" />
     <SUITE FILE_PATH="coverage/intelligent_data_analysis$example2.coverage" NAME="example2 Coverage Results" MODIFIED="1569956433277" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lab2" />
-    <SUITE FILE_PATH="coverage/intelligent_data_analysis$method1.coverage" NAME="method1 Coverage Results" MODIFIED="1570106885918" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lab2" />
+    <SUITE FILE_PATH="coverage/intelligent_data_analysis$method1.coverage" NAME="method1 Coverage Results" MODIFIED="1570180999257" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lab2" />
     <SUITE FILE_PATH="coverage/intelligent_data_analysis$script.coverage" NAME="script Coverage Results" MODIFIED="1570009920168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lab2" />
   </component>
 </project>
