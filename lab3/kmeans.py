@@ -1,46 +1,24 @@
 import math
-
 import numpy as np
 import matplotlib.pyplot as plt
 
-centroids = np.random.rand(4, 2)
-points = np.random.rand(1000, 2)
+points_num = 10000
+clusters_num = 4
 k = 0.0001
-cluster_num = 4
-
-class1 = np.array([])
-class2 = np.array([])
-class3 = np.array([])
-class4 = np.array([])
-
-def draw_centroids(centroids):
-    plt.plot(centroids[0][0], centroids[0][1], 'ok')
-    plt.plot(centroids[1][0], centroids[1][1], 'ok')
-    plt.plot(centroids[2][0], centroids[2][1], 'ok')
-    plt.plot(centroids[3][0], centroids[3][1], 'ok')
+pause = 0.001
 
 
-def draw_points(points):
-    plt.plot(points[:, 0], points[:, 1], '.k')
-
-
-def distance(p1, p2): return math.sqrt(((p1[0] - p2[0]) ** 2) + ((p1[1] - p2[1]) ** 2))
+def distance(p1, p2):
+    return math.sqrt(((p1[0] - p2[0]) ** 2) + ((p1[1] - p2[1]) ** 2))
 
 
 def get_nearest_centroid(p, centroids):
-    d1 = distance(p, centroids[0])
-    d2 = distance(p, centroids[1])
-    d3 = distance(p, centroids[2])
-    d4 = distance(p, centroids[3])
-    d_min = min(d1, d2, d3, d4)
-    if d_min == d1:
-        return centroids[0]
-    elif d_min == d2:
-        return centroids[1]
-    elif d_min == d3:
-        return centroids[2]
-    else:
-        return centroids[3]
+    distances = []
+    for i in range(clusters_num):
+        distances.append(distance(p, centroids[i]))
+    # distances = [distance(p, c) for c in centroids]
+    index = np.where(distances == np.amin(distances))
+    return centroids[index]
 
 
 def get_centroid(points):
@@ -50,85 +28,82 @@ def get_centroid(points):
 
 
 def draw_classes(classes):
-    plt.plot(classes[0][:, 0], classes[0][:, 1], '.r')
-    plt.plot(classes[1][:, 0], classes[1][:, 1], '.b')
-    plt.plot(classes[2][:, 0], classes[2][:, 1], '.y')
-    plt.plot(classes[3][:, 0], classes[3][:, 1], '.g')
+    colors = ['r', 'b', 'y', 'g', 'c', 'm']
+    for i in range(clusters_num):
+        plt.plot(classes[i][:, 0], classes[i][:, 1], '.' + colors[i])
 
 
-def classify():
-    global class1, class2, class3, class4
-    for p in points:
-        nearest_centroid = get_nearest_centroid(p, centroids)
-        if np.array_equal(nearest_centroid, centroids[0]):
-            class1 = np.append(class1, p)
-        elif np.array_equal(nearest_centroid, centroids[1]):
-            class2 = np.append(class2, p)
-        elif np.array_equal(nearest_centroid, centroids[2]):
-            class3 = np.append(class3, p)
-        else:
-            class4 = np.append(class4, p)
-
-
-def clear_classes():
-    global class1, class2, class3, class4
-    class1 = np.array([])
-    class2 = np.array([])
-    class3 = np.array([])
-    class4 = np.array([])
-
-
-def reshape_classes():
-    global class1, class2, class3, class4
-    class1 = np.reshape(class1, (-1, 2))
-    class2 = np.reshape(class2, (-1, 2))
-    class3 = np.reshape(class3, (-1, 2))
-    class4 = np.reshape(class4, (-1, 2))
+def draw_centroids(centroids):
+    for c in centroids:
+        plt.plot(c[0], c[1], 'ok')
 
 
 def is_end(prev_centroids, centroids):
+    global clusters_num
     end = True
-    for i in range(cluster_num):
+    for i in range(clusters_num):
         if distance(prev_centroids[i], centroids[i]) > k:
             end = False
 
     return end
 
 
-def build_plot(classes):
+def classify(points, centroids):
+    classes = [[] for _ in range(clusters_num)]
+    for p in points:
+        nearest_centroid = get_nearest_centroid(p, centroids)
+        nearest_centroid = np.reshape(nearest_centroid, (1, 2))
+        for i in range(clusters_num):
+            if np.array_equal(nearest_centroid[0], centroids[i]):
+                classes[i] = np.append(classes[i], [p])
+
+    for i in range(clusters_num):
+        classes[i] = np.reshape(classes[i], (-1, 2))
+
+    return classes
+
+
+def build_plot(classes, centroids):
     draw_classes(classes)
-    # draw_centroids(centroids)
+    draw_centroids(centroids)
     axes = plt.gca()
     axes.set_xlim([-0.1, 1.1])
     axes.set_ylim([-0.1, 1.1])
+    plt.text(0, 1.15, 'Iteration 1')
     plt.grid(True)
     plt.ion()
     plt.show()
 
 
-def update_plot(classes):
-    plt.pause(0.2)
+def update_plot(classes, centroids, i):
+    global pause
+    plt.pause(pause)
     plt.clf()
     axes = plt.gca()
+    plt.grid(True)
     axes.set_xlim([-0.1, 1.1])
     axes.set_ylim([-0.1, 1.1])
+    plt.text(0, 1.15, 'Iteration ' + str(i))
     draw_classes(classes)
-    # draw_centroids(centroids)
+    draw_centroids(centroids)
     plt.show()
 
 
-def k_means(classes):
-    global centroids, class1, class2, class3, class4
+def k_means(points, centroids):
+    global clusters_num
+    classes = classify(points, centroids)
+    build_plot(classes, centroids)
+    i = 1
     while True:
-        clear_classes()
+        i += 1
         prev_centroids = centroids
-        centroids = [get_centroid(c) for c in classes if len(c) > 0]
-        centroids = np.reshape(centroids, (cluster_num, 2))
-        classify()
-        reshape_classes()
-        classes = np.array([class1, class2, class3, class4])
-        update_plot(classes)
+        centroids = [get_centroid(c) for c in classes]
+        centroids = np.reshape(centroids, (clusters_num, 2))
+        classes = classify(points, centroids)
+        update_plot(classes, centroids, i)
         if is_end(prev_centroids, centroids):
+            plt.text(0.4, 1.15, 'Converged!')
+            plt.show()
             break
 
     print('END')
@@ -136,16 +111,9 @@ def k_means(classes):
 
 
 def main():
-    global class1, class2, class3, class4, centroids
-    print('Init centroids:')
-    print(centroids)
-    classify()
-    reshape_classes()
-    classes = np.array([class1, class2, class3, class4])
-    # print('Init classes:')
-    # print(classes)
-    build_plot(classes)
-    k_means(classes)
+    points = np.random.rand(points_num, 2)
+    centroids = np.random.rand(clusters_num, 2)
+    k_means(points, centroids)
 
 if __name__ == "__main__":
     main()
