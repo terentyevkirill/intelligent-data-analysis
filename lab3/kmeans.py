@@ -2,17 +2,26 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-points_num = 10000
-clusters_num = 4
-k = 0.0001
-pause = 0.001
+points_num = 10000  # число точек, подлежащих класеризации
+clusters_num = 4    # число кластеров
+k = 0.0001          # точность алгоритма кластеризации
+pause = 0.001       # пауза между отрисовками итераций
 
 
 def distance(p1, p2):
+    '''
+    Получение эвклидового расстояния между двумя точками
+    '''
     return math.sqrt(((p1[0] - p2[0]) ** 2) + ((p1[1] - p2[1]) ** 2))
 
 
 def get_nearest_centroid(p, centroids):
+    '''
+    Получение ближайшего центроида к данной точке
+    :param p: точка
+    :param centroids: массив центроидов (число = числу кластеров)
+    :return: координаты ближайшего центроида к точке p
+    '''
     distances = []
     for i in range(clusters_num):
         distances.append(distance(p, centroids[i]))
@@ -22,23 +31,36 @@ def get_nearest_centroid(p, centroids):
 
 
 def get_centroid(points):
+    '''
+    Нахождение центроида для массива точек
+    :param points: массив точек
+    :return: координаты центроида
+    '''
     x = [p[0] for p in points]
     y = [p[1] for p in points]
     return [sum(x) / len(points), sum(y) / len(points)]
 
 
 def draw_classes(classes):
+    ''' Отрисовка классов '''
     colors = ['r', 'b', 'y', 'g', 'c', 'm']
     for i in range(clusters_num):
         plt.plot(classes[i][:, 0], classes[i][:, 1], '.' + colors[i])
 
 
 def draw_centroids(centroids):
+    ''' Отрисовка центроидов '''
     for c in centroids:
         plt.plot(c[0], c[1], 'ok')
 
 
 def is_end(prev_centroids, centroids):
+    '''
+    Проверка на завершение алгоритма
+    :param prev_centroids: центроиды классов на предыдущей итерации
+    :param centroids: центроиды классов на текущей итерации
+    :return: завершился ли алгоритм
+    '''
     global clusters_num
     end = True
     for i in range(clusters_num):
@@ -49,6 +71,12 @@ def is_end(prev_centroids, centroids):
 
 
 def classify(points, centroids):
+    '''
+    Классификация массива точек по кластерам (ближайший центроид к точке)
+    :param points: массив точек подлежащих кластеризации
+    :param centroids: массив центроидов
+    :return: массив классов (класс = массив точек)
+    '''
     classes = [[] for _ in range(clusters_num)]
     for p in points:
         nearest_centroid = get_nearest_centroid(p, centroids)
@@ -64,6 +92,7 @@ def classify(points, centroids):
 
 
 def build_plot(classes, centroids):
+    ''' Настройка графика (установка) '''
     draw_classes(classes)
     draw_centroids(centroids)
     axes = plt.gca()
@@ -76,6 +105,7 @@ def build_plot(classes, centroids):
 
 
 def update_plot(classes, centroids, i):
+    ''' Перерисовка графика (цикл) '''
     global pause
     plt.pause(pause)
     plt.clf()
@@ -90,6 +120,11 @@ def update_plot(classes, centroids, i):
 
 
 def k_means(points, centroids):
+    '''
+    Алгоритм кластеризации
+    :param points: точки для кластеризации
+    :param centroids: массив центроидов (изначальный)
+    '''
     global clusters_num
     classes = classify(points, centroids)
     build_plot(classes, centroids)
