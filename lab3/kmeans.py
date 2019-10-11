@@ -1,9 +1,10 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 
-points_num = 10000  # число точек, подлежащих класеризации
-clusters_num = 4    # число кластеров
+points_num = 0  # число точек, подлежащих класеризации
+clusters_num = 0    # число кластеров
 k = 0.0001          # точность алгоритма кластеризации
 pause = 0.001       # пауза между отрисовками итераций
 
@@ -146,9 +147,14 @@ def k_means(points, centroids):
 
 
 def main():
+    global points_num, clusters_num
+    points_num = int(sys.argv[1])
+    clusters_num = int(sys.argv[2])
+
     points = np.random.rand(points_num, 2)
     centroids = np.random.rand(clusters_num, 2)
     k_means(points, centroids)
+
 
 if __name__ == "__main__":
     main()
