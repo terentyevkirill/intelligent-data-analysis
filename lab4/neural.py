@@ -3,38 +3,107 @@
 '''
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.optimize as optimization
+import random
 
-
-def draw_line(x_arr, y_arr):
-    plt.plot(x_arr, y_arr)
+def draw_points(x_arr, y_arr, *args):
+    plt.plot(x_arr, y_arr, *args)
 
 
 def least_squares(x_arr, y_arr):
     # y = mx + c
     n = len(x_arr)
+    # m an c are coefficients
     m = (n * sum(x_arr * y_arr) - sum(x_arr) * sum(y_arr)) / (n * sum(x_arr ** 2) - sum(x_arr) ** 2)
     c = (sum(y_arr) - m * sum(x_arr)) / n
-    return {
-        'm': m,
-        'c': c
-    }
+    e = sum((y_arr - (m * x_arr + c)) ** 2)
+    return [m, c, e]
 
 
-def draw_fun_line(x_arr, fun):
-    y_arr = [fun['m'] * x + fun['c'] for x in x_arr]
-    draw_line(x_arr, y_arr)
+def draw_line(x_arr, m, c, *args):
+    y_arr = [m * x + c for x in x_arr]
+    draw_points(x_arr, y_arr, *args)
+
+
+def get_error(t, y):
+    return t - y
+
+
+def neural(x_arr, y_arr, m_init, c_init, n_coef, e_min, n_max):
+    m = np.random.uniform(-10, 10)
+    c = np.random.uniform(-10, 10)
+    e_arr = np.array([])
+    n = 1  # outer iteration counter
+    while True:
+        error = 0
+        for i in range(len(x_arr)):
+            dy = get_error(y_arr[i], m * x_arr[i] + c)  # сигма, ошибка
+            dm = dy * x_arr[i] * n_coef
+            dc = dy * n_coef
+            m += dm
+            c += dc
+            error += get_error(y_arr[i], m * x_arr[i] + c)
+
+        e_arr = np.append(e_arr, abs(error))
+        update_plot(x_arr, y_arr, m_init, c_init, m, c, n)
+        n += 1
+        if e_arr[-1] <= e_min or n > n_max:   # e <= e_min
+            break
+
+    plt.text(0, 21, 'Finish')
+    plt.show()
+    return [m, c, e_arr]
+
+
+def init_plot(x_arr, y_arr, m, c):
+    draw_points(x_arr, y_arr, '.k')
+    draw_line(x_arr, m, c)
+    axes = plt.gca()
+    axes.set_xlim([0, 10])
+    axes.set_ylim([0, 20])
+    plt.text(0, 21, 'Start')
+    plt.grid(True)
+    plt.ion()
+    plt.show()
+
+
+def update_plot(x_arr, y_arr, m_init, c_init, m, c, i):
+    plt.pause(0.001)
+    plt.clf()
+    axes = plt.gca()
+    plt.grid(True)
+    axes.set_xlim([0, 10])
+    axes.set_ylim([0, 20])
+    plt.text(5, 21, 'Iteration ' + str(i))
+    draw_points(x_arr, y_arr, '.k')
+    draw_line(x_arr, m_init, c_init, '-r')
+    draw_line(x_arr, m, c)
+    plt.show()
+
+
+def draw_errors(e_arr, e_min):
+    plt.pause(3)
+    plt.clf()
+    plt.grid(True)
+    plt.plot(e_arr)
+    plt.axhline(e_min, 0, len(e_arr), color='red')
 
 
 def main():
     x_arr = np.array([i + 1 for i in range(9)])
     y_arr = np.array([5.8, 7.8, 8, 9.4, 10.2, 11, 12, 13, 14.4])
-    # print(f'x_arr: {x_arr}')
-    # print(f'y_arr: {y_arr}')
-    draw_line(x_arr, y_arr)
-    print(least_squares(x_arr, y_arr))
-    draw_fun_line(x_arr, least_squares(x_arr, y_arr))
-    plt.show()
+    n_coef = 0.001
+    n_max = 300
+    m_init, c_init, e_min = least_squares(x_arr, y_arr)
+    print("Min Error={0}".format(e_min))
+    print("init m={0}; init c={1}".format(m_init, c_init))
+    init_plot(x_arr, y_arr, m_init, c_init)
+    m, c, e_arr = neural(x_arr, y_arr, m_init, c_init, n_coef, e_min, n_max)
+    print("m={0}; c={1}".format(m, c))
+    print("Errors:")
+    print(e_arr)
+    draw_errors(e_arr, e_min)
+
+    plt.pause(100)
 
 
 if __name__ == '__main__':
