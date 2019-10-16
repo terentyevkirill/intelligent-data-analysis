@@ -31,14 +31,15 @@ def get_error(t, y):
 
 def init_plot(x_arr, y_arr, m, c):
     draw_points(x_arr, y_arr, '.k')
-    draw_line(x_arr, m, c)
+    draw_line(x_arr, m, c, '-r')
     axes = plt.gca()
     axes.set_xlim([0, 10])
     axes.set_ylim([0, 20])
-    plt.text(0, 21, 'Start')
+    plt.text(0, 21, 'Start m={0}; c={1}'.format(m, c))
     plt.grid(True)
     plt.ion()
     plt.show()
+    plt.pause(2)
 
 
 def update_plot(x_arr, y_arr, m_init, c_init, m, c, i):
@@ -48,7 +49,8 @@ def update_plot(x_arr, y_arr, m_init, c_init, m, c, i):
     plt.grid(True)
     axes.set_xlim([0, 10])
     axes.set_ylim([0, 20])
-    plt.text(5, 21, 'Iteration ' + str(i))
+    plt.text(0, 21, 'Iteration {0}'.format(i))
+    plt.text(2.5, 21, 'm={0}; c={1}'.format(m, c))
     draw_points(x_arr, y_arr, '.k')
     draw_line(x_arr, m_init, c_init, '-r')
     draw_line(x_arr, m, c)
@@ -59,10 +61,11 @@ def draw_errors(e_arr, e_min):
     plt.pause(3)
     plt.clf()
     plt.grid(True)
-    plt.plot(e_arr)
+
     p1 = plt.axhline(e_min, 0, len(e_arr), color='red')
-    plt.legend([p1], ['Least squares method error'])
-    plt.xlabel('Iterations')
+    p2, = plt.plot(e_arr)
+    plt.legend([p1, p2], ['Least squares method error', 'Neural network method error'])
+    plt.xlabel('Iterations ({0})'.format(len(e_arr)))
     plt.ylabel('Error')
 
 
@@ -77,7 +80,6 @@ def neural(x_arr, y_arr, m_init, c_init, n_coef, e_min, n_max):
             dy = get_error(y_arr[i], m * x_arr[i] + c)  # сигма, ошибка
             dm = dy * x_arr[i] * n_coef
             dc = dy * n_coef
-            print("dm={0}; dc={1}".format(dm, dc))
             m += dm
             c += dc
             error += get_error(y_arr[i], m * x_arr[i] + c)
@@ -88,8 +90,6 @@ def neural(x_arr, y_arr, m_init, c_init, n_coef, e_min, n_max):
         if e_arr[-1] <= e_min or n > n_max:
             break
 
-    plt.text(0, 21, 'Finish')
-    plt.show()
     return [m, c, e_arr]
 
 
@@ -100,12 +100,10 @@ def main():
     n_max = 300
     m_init, c_init, e_min = least_squares(x_arr, y_arr)
     print("Min Error={0}".format(e_min))
-    print("init m={0}; init c={1}".format(m_init, c_init))
+    print("Least square: m={0}; c={1}; e={2}".format(m_init, c_init, e_min))
     init_plot(x_arr, y_arr, m_init, c_init)
     m, c, e_arr = neural(x_arr, y_arr, m_init, c_init, n_coef, e_min, n_max)
-    print("m={0}; c={1}".format(m, c))
-    print("Errors:")
-    print(e_arr)
+    print("Neural network: m={0}; c={1}; e={2}".format(m, c, e_arr[-1]))
     draw_errors(e_arr, e_min)
 
     plt.pause(100)
