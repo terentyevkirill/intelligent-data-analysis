@@ -3,7 +3,7 @@
 '''
 import numpy as np
 import matplotlib.pyplot as plt
-import random
+from mpl_toolkits.mplot3d import Axes3D
 
 
 def draw_points(x_arr, y_arr, *args):
@@ -70,9 +70,12 @@ def draw_errors(e_arr, e_min):
 
 
 def neural(x_arr, y_arr, m_init, c_init, n_coef, e_min, n_max):
-    m = np.random.uniform(-50, 50)
-    c = np.random.uniform(-50, 50)
+    m = np.random.uniform(0, 5)
+    c = np.random.uniform(0, 5)
     e_arr = np.array([])
+    m_arr = np.array([])
+    c_arr = np.array([])
+    e2d_arr = np.array([])
     n = 1  # outer iteration counter
     while True:
         error = 0
@@ -82,15 +85,20 @@ def neural(x_arr, y_arr, m_init, c_init, n_coef, e_min, n_max):
             dc = dy * n_coef
             m += dm
             c += dc
-            error += get_error(y_arr[i], m * x_arr[i] + c)
+            error += get_error(y_arr[i], m * x_arr[i] + c) ** 2
 
-        e_arr = np.append(e_arr, abs(error))
+        m_arr = np.append(m_arr, m)
+        c_arr = np.append(c_arr, c)
+        e_arr = np.append(e_arr, error)
         update_plot(x_arr, y_arr, m_init, c_init, m, c, n)
         n += 1
         if e_arr[-1] <= e_min or n > n_max:
             break
 
-    return [m, c, e_arr]
+    for m in m_arr:
+        for c in c_arr:
+            e2d_arr = np.append(e2d_arr, sum(y_arr - (m * x_arr + c)))
+    return [m_arr, c_arr, e_arr, e2d_arr]
 
 
 def main():
@@ -102,10 +110,16 @@ def main():
     print("Min Error={0}".format(e_min))
     print("Least square: m={0}; c={1}; e={2}".format(m_init, c_init, e_min))
     init_plot(x_arr, y_arr, m_init, c_init)
-    m, c, e_arr = neural(x_arr, y_arr, m_init, c_init, n_coef, e_min, n_max)
-    print("Neural network: m={0}; c={1}; e={2}".format(m, c, e_arr[-1]))
+    m_arr, c_arr, e_arr, e2d_arr = neural(x_arr, y_arr, m_init, c_init, n_coef, e_min, n_max)
+    print("Neural network: m={0}; c={1}; e={2}".format(m_arr[-1], c_arr[-1], e_arr[-1]))
     draw_errors(e_arr, e_min)
 
+    plt.pause(5)
+    plt.clf()
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
+    Axes3D.plot_surface(ax, m_arr, c_arr, e2d_arr)
+    plt.show()
     plt.pause(100)
 
 
